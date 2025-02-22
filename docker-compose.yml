@@ -7,7 +7,8 @@ services:
       context: .
       target: development
     volumes:
-      - './:/app'  
+      - '/app/node_modules'  # Keep only this
+
     environment:
       - NODE_ENV=development
     ports:
