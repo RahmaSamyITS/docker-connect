@@ -1,70 +1,72 @@
-
+version: "3.8"  # Define correct Docker Compose version
 
 services:
   my-node-app:
-    container_name: wizardly_ride
-    build:
-      context: .
-      target: development
+    container_name: my-node-service
     volumes:
-      - '/app/node_modules'  # Keep only this
-
-    environment:
-      - NODE_ENV=development
-    ports:
-      - "5000:4000"
-    command: ["npm", "start"]
+      - './:/app'  # Sync entire project with container
+      - '/app/node_modules'  # Prevent overwriting node_modules in container
+  
     depends_on:
-      - postgres  # Ensure Node app waits for MongoDB
+      - postgres  # Ensure Node app waits for PostgreSQL
+    restart: always  # Ensures the service restarts if it crashes
 
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   volumes:
-  #     - mongo-db:/data/db
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: rahmasamy949
-  #     MONGO_INITDB_ROOT_PASSWORD: vCCRVb6LbgucUIs7
-  #   ports:
-  #     - "27017:27018"
-
-  # mongo-express:
-    # image: mongo-express
-    # restart: always
-    # ports:
-    #   - "8081:8081"
-    # environment:
-    #   ME_CONFIG_MONGODB_ADMINUSERNAME: rahmasamy949
-    #   ME_CONFIG_MONGODB_ADMINPASSWORD: vCCRVb6LbgucUIs7
-    #   ME_CONFIG_MONGODB_URL: mongodb://rahmasamy949:vCCRVb6LbgucUIs7@mongo:27017/
-    #   ME_CONFIG_BASICAUTH: false
-    # depends_on:
-    #   - mongo  # Ensure Node app waits for MongoDB
-  redis : 
+  redis:
     image: redis
-    
+    container_name: docker-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
   nginx:
     image: nginx:stable-alpine
+    container_name: docker-nginx
     ports:
      - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - my-node-app
+    restart: always
+
   postgres:
     image: postgres
     container_name: docker-postgres-db
     restart: always
     env_file:
-      - .env
+      - .env  # Use an external .env file for credentials
     volumes:
       - postgres-db:/var/lib/postgresql/data 
-  
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
 
+  # MongoDB Service (Commented Out, But Kept for Reference)
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   volumes:
+  #     - mongo-db:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+  #   ports:
+  #     - "27017:27017"
+  #
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - "8081:8081"
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+  #     ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:27017/
+  #     ME_CONFIG_BASICAUTH: false
+  #   depends_on:
+  #     - mongo
+
 volumes:
-  mongo-db:
   postgres-db:
+  mongo-db:  # Keeping volume definition even though MongoDB is commented out
