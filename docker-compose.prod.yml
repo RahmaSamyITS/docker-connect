@@ -1,0 +1,18 @@
+services:
+  my-node-app:
+    container_name: wizardly_ride  # Ensures a fixed name but avoid duplicates
+    build:
+      context: .
+      target: production
+
+    volumes:
+      - './.my-node-app:/app'
+
+    environment:
+      - NODE_ENV=production
+
+    ports:
+      - "4000:4000"
+
+    command: ["npm", "start"]  # Ensure npm start exists in package.json
+

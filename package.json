@@ -1,0 +1,22 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongo": "^0.1.0",
+    "mongodb": "^6.13.0",
+    "mongoose": "^8.10.1",
+    "mongosh": "^2.3.9",
+    "nodemon": "^3.1.9",
+    "pg": "^8.13.3",
+    "redis": "^4.7.0"
+  }
+}

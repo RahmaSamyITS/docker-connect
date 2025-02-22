@@ -1,0 +1,22 @@
+
+
+services:
+  my-node-app:
+    container_name: my-node-dev
+    build:
+      context: .
+      target: development
+
+    volumes:
+      - './:/app'  # Sync entire project with container
+      - '/app/node_modules'  # Prevent overwriting node_modules in container
+
+    environment:
+      - NODE_ENV=development  
+
+    ports:
+      - "5000:4000"
+
+    command: ["npm", "start"]  # Start the Node.js app
+
+    restart: always
