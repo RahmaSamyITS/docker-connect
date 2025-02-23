@@ -48,7 +48,7 @@ client.connect();
 // Routes
 app.get('/', async (req, res) => {
   await client.set("hello_message", "Hello, Docker with Node.js!");
-  res.send('Hello, Docker with Node.js!');
+  res.send('Hello, Docker with Node.js using dockerhub!');
 });
 
 app.get('/data', async (req, res) => {
