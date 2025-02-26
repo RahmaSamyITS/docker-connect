@@ -55,7 +55,7 @@ app.get('/', async (req, res) => {
   await client.set("hello_message", "Hello, Docker with Node.js!");
   console.log(`os from container ${os.hostname}`);
   
-  res.send('Hello, Docker with Node.js using dockerhub! hhhhhh');
+  res.send('Hello, Docker with Node.js using dockerhub! watchtower');
 });
 
 app.get('/data', async (req, res) => {
