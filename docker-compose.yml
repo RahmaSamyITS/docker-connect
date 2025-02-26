@@ -3,6 +3,16 @@ version: "3.8"  # Define correct Docker Compose version
 services:
   my-node-app:
     image: rahmasamy12/postgress-radis-ginx
+    deploy : 
+      replicas : 3
+      placement : 
+        max_replicas_per_node: 1
+      update_config:
+       parallelism: 2
+       delay: 5s
+      restart_policy:
+       condition: on-failure
+
     volumes:
       - './:/app'  # Sync entire project with container
       - '/app/node_modules'  # Prevent overwriting node_modules in container
