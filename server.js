@@ -2,7 +2,7 @@ const express = require('express');
 // const mongoose = require('mongoose');
 const redis = require('redis');
 const pg = require('pg');
-
+const os =require('os');
 
 const app = express();
 app.use(express.json()); // Fix: Use express.json() middleware properly
@@ -41,14 +41,21 @@ const client = redis.createClient({
 });
 
 client.on('error', (err) => console.error('❌ Redis Client Error:', err));
-client.on('connect', () => console.log('✅ Redis Client connected...'));
+client.on('connect', () => {
+  console.log('✅ Redis Client connected...')
+  console.log(`os from container ${os.hostname}`);
+}
+ 
+);
 
 client.connect();
 
 // Routes
 app.get('/', async (req, res) => {
   await client.set("hello_message", "Hello, Docker with Node.js!");
-  res.send('Hello, Docker with Node.js using dockerhub!');
+  console.log(`os from container ${os.hostname}`);
+  
+  res.send('Hello, Docker with Node.js using dockerhub! hhhhhh');
 });
 
 app.get('/data', async (req, res) => {

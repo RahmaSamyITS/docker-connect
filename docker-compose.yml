@@ -2,7 +2,6 @@ version: "3.8"  # Define correct Docker Compose version
 
 services:
   my-node-app:
-    container_name: my-node-service
     image: rahmasamy12/postgress-radis-ginx
     volumes:
       - './:/app'  # Sync entire project with container

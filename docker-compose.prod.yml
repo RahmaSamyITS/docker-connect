@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   my-node-app:
-    container_name: my-node-prod
     build:
       context: .
       target: production
@@ -11,7 +10,7 @@ services:
       - '/app/node_modules'  # Prevent overwriting node_modules
     environment:
       - NODE_ENV=production
-    ports:
-      - "4000:4000"
+    # ports:
+    #   - "4000:4000"
     command: ["npm", "start"]
     restart: always
